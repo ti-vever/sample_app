@@ -62,4 +62,12 @@ class UsersControllerTest < ActionController::TestCase
 		assert_redirected_to root_url
 	end
 
+	test "should not update admin attribute via the web" do
+		log_in_as @other_user
+
+		patch :update, id:@other_user, user: { name:@other_user.name, email:@other_user.email, admin: !@other_user.admin? }
+		
+		assert_equal @other_user.admin?, @other_user.reload.admin?
+	end
+
 end
